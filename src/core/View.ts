@@ -1,9 +1,9 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/addons/controls/OrbitControls.js';
+import { OrbitControls } from '@three/addons/controls/OrbitControls.js';
+import { PerspectiveCamera } from 'three';
 import type { Sizes } from './Sizes.ts';
 
 export class View {
-  camera: THREE.PerspectiveCamera;
+  camera: PerspectiveCamera;
   controls: OrbitControls;
   canvas: HTMLCanvasElement;
   sizes: Sizes;
@@ -12,7 +12,7 @@ export class View {
     this.canvas = canvas;
     this.sizes = sizes;
 
-    this.camera = new THREE.PerspectiveCamera(
+    this.camera = new PerspectiveCamera(
       75,
       this.sizes.width / this.sizes.height,
       0.01,

@@ -22,8 +22,10 @@ object {
 }
 
 body {
-  background: #221d20;
+  /* background: #221d20; */
+  background: #1f1a1d;
   min-height: 100vh;
+  overflow: hidden;
 }
 
 .engine-debug {

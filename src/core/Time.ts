@@ -1,23 +1,27 @@
 import type { FpsGraphBladeApi } from '@tweakpane/plugin-essentials';
-import { Debug } from '../utils/Debug.ts';
-import { EventDispatcher } from '../utils/EventDispatcher.ts';
+import { Debug } from '@/utils/Debug.ts';
+import { EventDispatcher } from '@/utils/EventDispatcher.ts';
+import type { Renderer } from './Renderer.ts';
 
 const container = document.querySelector('.engine-debug') as HTMLDivElement;
 
 export class Time extends EventDispatcher<{ tick: null }> {
+  private renderer: Renderer;
   start = Date.now();
   current = this.start;
   elapsed = 0;
   delta = 16;
-  debug = new Debug({ container });
-  fpsGraph = this.debug.addBlade({
+  private debug = new Debug({ container });
+  private fpsGraph = this.debug.addBlade({
     view: 'fpsgraph',
     label: 'FPS',
     rows: 2,
   }) as FpsGraphBladeApi;
 
-  constructor() {
+  constructor(renderer: Renderer) {
     super();
+
+    this.renderer = renderer;
 
     globalThis.requestAnimationFrame(() => {
       this.tick();
@@ -35,7 +39,7 @@ export class Time extends EventDispatcher<{ tick: null }> {
     this.dispatch('tick');
 
     this.fpsGraph.end();
-    globalThis.requestAnimationFrame(() => {
+    this.renderer.setAnimationLoop(() => {
       this.tick();
     });
   }

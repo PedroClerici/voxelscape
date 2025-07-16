@@ -1,4 +1,4 @@
-import { EventDispatcher } from '../utils/EventDispatcher.ts';
+import { EventDispatcher } from '@/utils/EventDispatcher.ts';
 
 export class Sizes extends EventDispatcher<{ resize: null }> {
   width: number;

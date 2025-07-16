@@ -1,35 +1,41 @@
-import * as THREE from 'three';
-import type { View } from './View.ts';
+import {
+  CineonToneMapping,
+  LinearSRGBColorSpace,
+  PCFShadowMap,
+  type Scene,
+  WebGPURenderer,
+} from 'three';
 import type { Sizes } from './Sizes.ts';
+import type { View } from './View.ts';
 
-export class Renderer {
+export class Renderer extends WebGPURenderer {
   canvas: HTMLCanvasElement;
   sizes: Sizes;
-  instance: THREE.WebGLRenderer;
 
   constructor(canvas: HTMLCanvasElement, sizes: Sizes) {
+    super({
+      antialias: true,
+      canvas: canvas,
+    });
+
     this.canvas = canvas;
     this.sizes = sizes;
 
-    this.instance = new THREE.WebGLRenderer({
-      antialias: true,
-      canvas: this.canvas,
-    });
-    this.instance.toneMapping = THREE.CineonToneMapping;
-    this.instance.toneMappingExposure = 1.75;
-    this.instance.shadowMap.enabled = true;
-    this.instance.shadowMap.type = THREE.PCFShadowMap;
-    this.instance.setClearColor('#221d20');
-    this.instance.setSize(this.sizes.width, this.sizes.height);
-    this.instance.setPixelRatio(this.sizes.pixelRatio);
+    this.outputColorSpace = LinearSRGBColorSpace;
+    this.toneMapping = CineonToneMapping;
+    this.toneMappingExposure = 1.75;
+    this.shadowMap.enabled = true;
+    this.shadowMap.type = PCFShadowMap;
+    this.setSize(this.sizes.width, this.sizes.height);
+    this.setPixelRatio(this.sizes.pixelRatio);
   }
 
   resize() {
-    this.instance.setSize(this.sizes.width, this.sizes.height);
-    this.instance.setPixelRatio(this.sizes.pixelRatio);
+    this.setSize(this.sizes.width, this.sizes.height);
+    this.setPixelRatio(this.sizes.pixelRatio);
   }
 
-  update(scene: THREE.Scene, view: View) {
-    this.instance.render(scene, view.camera);
+  update(scene: Scene, view: View) {
+    this.renderAsync(scene, view.camera);
   }
 }

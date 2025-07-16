@@ -1,12 +1,13 @@
-import * as THREE from 'three';
+import { Scene } from 'three';
+import { Renderer } from './Renderer.ts';
 import { Sizes } from './Sizes.ts';
 import { Time } from './Time.ts';
 import { View } from './View.ts';
-import { Renderer } from './Renderer.ts';
 
 abstract class World {
   // Will be set by the engine
-  scene!: THREE.Scene;
+  scene!: Scene;
+  view!: View;
   time!: Time;
 
   abstract setup(): void;
@@ -17,10 +18,10 @@ abstract class World {
 export class Engine {
   canvas: HTMLCanvasElement;
   sizes: Sizes;
-  time = new Time();
   renderer: Renderer;
+  time: Time;
   view: View;
-  scene: THREE.Scene;
+  scene: Scene;
   world: World | null = null;
 
   static World = World;
@@ -29,8 +30,9 @@ export class Engine {
     this.canvas = canvas;
     this.sizes = new Sizes();
     this.renderer = new Renderer(this.canvas, this.sizes);
+    this.time = new Time(this.renderer);
     this.view = new View(this.canvas, this.sizes);
-    this.scene = new THREE.Scene();
+    this.scene = new Scene();
   }
 
   resize() {
@@ -48,6 +50,7 @@ export class Engine {
 
   load(world: World) {
     world.scene = this.scene;
+    world.view = this.view;
     world.time = this.time;
     this.world = world;
 

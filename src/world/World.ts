@@ -1,5 +1,5 @@
-import { Engine } from '../core/Engine.ts';
-import { Debug } from '../utils/Debug.ts';
+import { Engine } from '@/core/Engine.ts';
+import { Debug } from '@/utils/Debug.ts';
 import { Example } from './Example.ts';
 
 class World extends Engine.World {
