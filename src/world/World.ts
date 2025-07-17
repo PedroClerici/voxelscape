@@ -1,19 +1,16 @@
 import { Engine } from '@/core/Engine.ts';
 import { Debug } from '@/utils/Debug.ts';
-import { Example } from './Example.ts';
+import { Chunk } from './Chunk.ts';
 
 class World extends Engine.World {
-  example = new Example();
+  chunk = new Chunk();
   debug = new Debug();
 
   setup() {
-    console.log('Hello, world!');
-    this.example.setup();
+    this.chunk.setup();
   }
 
-  update() {
-    this.example.update();
-  }
+  update() {}
 }
 
 export const world = new World();
